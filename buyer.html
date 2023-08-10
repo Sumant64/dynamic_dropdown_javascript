@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Dropdown</title>
+        <!-- Latest compiled and minified CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .card{
+            width: 50%;
+            margin: 2rem auto;
+        }
+
+        .card-title h1 {
+            text-align: center;
+        }
+
+        button {
+            position: relative;
+            left: 50%;
+            transform: translate(-50%, 0)
+        }
+
+
+    </style>
+
+    </head>
+<body>
+    <div class="card">
+        <div class="card-title">
+            <h1>Dynamic Dropdown</h1>
+        </div>
+        <div class="card-body">
+            <select name="brand" id="brand" class="form-control mt-3">
+                <option value="">Select brand</option>
+            </select>
+
+            <select name="model" id="model" class="form-control mt-3">
+                <option value="">Select Model</option>
+            </select>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+
+
+    <script>
+        var makeData = [
+        {
+            "_id": "5f0f5497cadeeabd0c59d985",
+            "make": "Maruti Suzuki"
+        },
+        {
+            "_id": "5f0f5457cadeeabd0c59be14",
+            "make": "Hyundai"
+        },
+        {
+            "_id": "5f0f5457cadeeabd0c59be00",
+            "make": "Mahindra"
+        },
+        {
+            "_id": "5f0f545acadeeabd0c59bf35",
+            "make": "Tata Motors"
+        }
+    ]
+
+    var modelData = [
+            {
+                "_id": "5f0f5497cadeeabd0c59d985",
+                "data": {
+                    0: "800",
+                    1: "A-STAR",
+                    2: "ALTO",
+                    3: "ALTO 800",
+                    4: "ALTO K10",
+                    5: "BALENO",
+                    6: "BALENO ALTURA",
+                    7: "BALENO RS",
+                    8: "BREZZA",
+                    9: "CELERIO",
+                    10: "CELERIOX",
+                    11: "CIAZ",
+                }
+            },
+            {
+                "_id": "5f0f5457cadeeabd0c59be14",
+                "data": {
+                    0: "4S FLUIDIC VERNA",
+                    1: "ACCENT",
+                    2: "ACCENT TORNADO",
+                    3: "ACCENT VIVA",
+                    4: "ALCAZAR",
+                    5: "AURA",
+                    6: "CRETA",
+                }
+            },
+            {
+                "_id": "5f0f5457cadeeabd0c59be00",
+                "data": {
+                    0: "ALTURAS G4",
+                    1: "ARMADA",
+                    2: "BOLERO",
+                    3: "BOLERO NEO",
+                    4: "BOLERO POWER+",
+                    5: "BOLERO SPORTZ",
+                }
+
+            },
+            {
+                "_id": "5f0f545acadeeabd0c59bf35",
+                "data": {
+                    0: "ALTROZ",
+                    1: "ARIA",
+                    2: "BOLT",
+                    3: "ESTATE",
+                    4: "GRANDE",
+                    5: "HARRIER",
+                    6: "HEXA",
+                }
+            },
+
+        ]
+
+        let brand = document.getElementById('brand');
+        let model = document.getElementById('model');
+
+        makeData.map((item) => {
+            let option = document.createElement("option");
+            option.setAttribute("value", item._id);
+            
+            let optionText = document.createTextNode(item.make);
+            option.appendChild(optionText);
+
+            brand.appendChild(option);
+        });
+
+        brand.addEventListener('change', event => {
+            removeOptions(document.getElementById('model'));
+            let id = event.target.value;
+            let result = modelData.filter((item) => {
+                return item._id == id;
+            })
+
+            if(result.length != 0){
+                result = result[0].data;
+                for(const x in result) {
+                    let option = document.createElement('option');
+                    option.setAttribute('value', x);
+
+                    let optionText = document.createTextNode(result[x]);
+
+                    option.appendChild(optionText);
+                    model.appendChild(option);
+                }
+            }
+        });
+
+        const removeOptions = (selectElement) => {
+            let i;
+            let length = selectElement.options.length - 1 ;
+            for (i = length; i >= 0; i--){
+                selectElement.remove(i);
+            }
+
+            let defaultOption = new Option("Select car model", "");
+            selectElement.appendChild(defaultOption);
+        }
+
+        
+    </script>
+</body>
+</html>
